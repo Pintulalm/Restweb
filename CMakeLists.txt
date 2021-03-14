@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.9)
 if (UNIX)
   add_definitions(-Wno-sign-compare -Wno-enum-compare)
 endif(UNIX)
@@ -15,9 +15,13 @@ add_executable(restserver
   main.cpp
   src/handler.cpp
   )
+find_package(cpprestsdk REQUIRED)
+find_package(ssl REQUIRED)
+find_package(boost_system REQUIRED)
+find_package(crypto REQUIRED)
 
-set(Casablanca_LIBRARIES "-lboost_system -lcrypto -lssl -lcpprest")
-set(LINKING_LIBRARIES ${Casablanca_LIBRARIES})
+set(Casablanca_LIBRARIES "-lboost_system -lcrypto -lssl")
+set(LINKING_LIBRARIES ${Casablanca_LIBRARIES} cpprestsdk::cpprest)
 
 if(DBMS)
 	set(NEW_DB_SRC_DIR ${CMAKE_SOURCE_DIR}/dbms/src)
